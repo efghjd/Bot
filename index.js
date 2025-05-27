@@ -6,10 +6,10 @@ const PORT =  '33197';
 
 let i = 0;
 function next() {
-  if (i < 10) {
+  if (i < 5) {
     i++;
     setTimeout(() => {
-      createBot(`bot${i}`);
+      createBot(`bbot${i}`);
       next();
     }, 500);
   }
@@ -24,10 +24,10 @@ function createBot(name) {
   });
 
   bot.on('spawn', () => {
-
+    console.log(`${name} joined the server.`);
   });
 
-  // ينام عند الليل إذا وُجد سرير
+  // يحاول النوم عندما يحل الليل أو أثناء العاصفة
   bot.on('time', () => {
     const time = bot.time.timeOfDay;
     const isNight = time > 13000 && time < 24000;
@@ -54,7 +54,7 @@ function createBot(name) {
     
   });
 
-  // حركة بسيطة كل دقيقة لمنع الطرد
+  // يتحرك بشكل دوري لمنع الطرد من Aternos
   setInterval(() => {
     if (bot.entity && bot.entity.position) {
       const yaw = Math.random() * Math.PI * 2;
@@ -62,13 +62,13 @@ function createBot(name) {
       bot.setControlState('jump', true); // يقفز
       setTimeout(() => bot.setControlState('jump', false), 300);
     }
-  }, 60000); // كل 60 ثانية
+  }, 60000); // كل دقيقة
 
   bot.on('end', () => {
     
   });
 
   bot.on('error', (err) => {
-    console.log(`${name} error:`, err.message);
+    
   });
 }
